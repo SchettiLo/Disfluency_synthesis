@@ -1,0 +1,77 @@
+---
+title: "Hesitation Synthesis Evaluation: Memory Test"
+author: "Loredana Schettino"
+date: "15/3/2022"
+output: html_document
+---
+
+# Memory Test
+```{r, include=FALSE}
+
+library(readxl)
+MT <- read_excel("Memory_Test_response.xlsx")
+summary(MT)
+
+library(Rmisc)
+
+```
+
+### Subjective Ratings - Quality
+
+
+```{r, include=TRUE}
+
+MT$Quality <- as.numeric(MT$Quality)
+
+q <- summarySE(MT, measurevar="Quality", groupvars=c("Condition"))
+q
+
+
+shapiro.test(MT$Quality)
+q_w<-wilcox.test(Quality ~ Condition, data=MT)
+q_w
+```
+
+### Subjective Ratings - Naturalness
+
+```{r, include=TRUE}
+
+MT$Naturalness <- as.numeric(MT$Naturalness)
+
+n <- summarySE(MT, measurevar="Naturalness", groupvars=c("Condition"))
+n
+
+shapiro.test(MT$Naturalness)
+n_w<-wilcox.test(Naturalness ~ Condition, data=MT)
+n_w
+```
+
+### Subjective Ratings - Likeability
+
+```{r, include=TRUE}
+
+MT$Likeability <- as.numeric(MT$Likeability)
+
+l <- summarySE(MT, measurevar="Likeability", groupvars=c("Condition"))
+l
+
+shapiro.test(MT$Likeability)
+l_w<-wilcox.test(Likeability ~ Condition, data=MT)
+l_w
+```
+
+
+### Memory Performance - F-score
+
+```{r, include=TRUE}
+
+MT$Fscore <- as.numeric(MT$Fscore)
+m <- summarySE(MT, measurevar="Fscore", groupvars=c("Condition"))
+m
+
+shapiro.test(MT$Fscore)
+t.test(Fscore ~ Condition, data = MT)
+m=lm(Fscore ~ Condition+culture+familiarity+sex+age, data = MT)
+summary(m)
+```
+

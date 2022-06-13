@@ -1,0 +1,113 @@
+---
+title: "Hesitation Synthesis Evaluation: Discrimination Test"
+author: "Loredana Schettino"
+date: "15/03/2022"
+output: html_document
+---
+
+# Discrimination Test
+
+### Naturalness - General Results
+```{r setup, include=FALSE}
+
+library(readxl)
+DT <- read_excel("Discrimination_Test_response.xlsx")
+summary(DT)
+
+
+target <- subset(DT, stimuli=="target")
+nat <- subset(target, question=="naturalness")
+ap <- subset(target, question=="appropriateness")
+
+```
+
+
+```{r naturalness, echo=FALSE}
+##naturalness####
+nat$phenomena <- factor(nat$phenomena)
+nat$choice <- factor(nat$choice)
+nat$Item <- factor(nat$Item)
+nat$set <- factor(nat$set)
+nat$age <- factor(nat$age)
+nat$sex <- factor(nat$sex)
+nat$familiarity <- factor(nat$familiarity)
+
+library(lme4)
+
+
+##sociolinguistic variables
+nat_var <- glmer(choice~age_+sex+familiarity+(1|Participant), data=nat, family="binomial")
+summary(nat_var)
+
+##general results
+fit <- glmer(choice~(1|Participant), data=nat, family="binomial")
+summary(fit)
+
+
+```
+### Naturalness - FP
+
+```{r, echo=FALSE}
+
+fp <- subset(nat,phenomena=="len_fp")
+
+fit_fp <- glmer(choice~(1|Participant), data=fp, family="binomial")
+summary(fit_fp)
+
+```
+### Naturalness - SP
+```{r, echo=FALSE}
+sp <- subset(nat,phenomena=="len_sp")
+
+fit_sp <- glmer(choice~(1|Participant), data=sp, family="binomial")
+summary(fit_sp)
+```
+
+
+### Appropriateness - General Results
+```{r appropriateness, echo=FALSE}
+ap$phenomena <- factor(ap$phenomena)
+ap$choice <- factor(ap$choice)
+ap$Item <- factor(ap$Item)
+ap$set <- factor(ap$set)
+ap$age <- factor(ap$age)
+ap$sex <- factor(ap$sex)
+ap$familiarity <- factor(ap$familiarity)
+
+library(lme4)
+
+
+##sociolinguistic variables
+ap_var <- glmer(choice~age_+sex+familiarity+(1|Participant), data=ap, family="binomial")
+summary(ap_var)
+
+##general results
+fit <- glmer(choice~(1|Participant), data=ap, family="binomial")
+summary(fit)
+
+```
+
+### Appropriateness - FP
+
+```{r, echo=FALSE}
+fp <- subset(ap,phenomena=="len_fp")
+
+fit_fp <- glmer(choice~(1|Participant), data=fp, family="binomial")
+summary(fit_fp)
+
+```
+
+
+### Appropriateness - SP
+
+```{r, echo=FALSE}
+sp <- subset(ap, phenomena=="len_sp")
+
+
+fit_sp <- glmer(choice~(1|Participant), data=sp, family="binomial")
+summary(fit_sp)
+
+
+
+```
+
